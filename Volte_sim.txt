@@ -1,0 +1,690 @@
+Provisioning the sysmoUSIM-SJS1-4ff for VoLTE  (Extensive details about the SIM in the following link https://www.sysmocom.de/manuals/sysmousim-manual.pdf)
+
+In order to install and/or manage Java Card applets on your card, you need to purchase a variant of the card that provides the ADM keys
+
+Key mapping for GlobalPlatformPro
+
+sysmoUSIM key                GlobalPlatformPro argument
+KIC1				--key-enc
+KID1				--key-mac
+KIK1				--key-dek
+
+
+Application List: List of Java applications on card
+
+Application					PID						AID
+SIM Application				A0000000090001FFFFFFFF8900		A0000000090001FFFFFFFF8900000000
+SIM RFM Application			A0000000090001FFFFFFFF8900		A0000000090001FFFFFFFF89B00010
+RAM Application				A0000000090001FFFFFFFF8900		A0000000090001FFFFFFFF89B00010
+USIM RFM App (opt)			FF434E52581040040203			FF434E52581040040203000000000000
+USIM Application			A0000000871002FF49FFFF8900		A0000000871002FF49FFFF89040B0000
+CAT_TP App (opt)			A0000000090001FFFFFFFF8900		A0000000090001FFFFFFFF89B00010
+
+Example:
+
+KIC1 = --key-enc = 975B496CED1F2FB984145A55AB31A585
+KID1 = --key-mac = E7207B567F9D08726A6EFBD90C50DA9A
+KIK1 = --key-dek = DEAA4E9A9B3BC6FC5EFF77A8E9925632
+
+Use the following project to any modifications to Java cards
+
+https://github.com/martinpaljak/GlobalPlatformPro (Note: Works properly for GP version 18.09.15 and below)
+
+On Linux machine:
+
+1. Download the .jar file
+2. java -jar gp.jar -info
+3. alias gp="java -jar $PWD/gp.jar"
+# Now you can avoid typing `java -jar` and `gp` works from any folder
+4. gp -h
+
+
+************ BETTER TO UNLOCK THE SIM (i.e. gp --unlock) ******************
+
+e.g. gp -key-enc 975B496CED1F2FB984145A55AB31A585 -key-mac E7207B567F9D08726A6EFBD90C50DA9A -key-dek DEAA4E9A9B3BC6FC5EFF77A8E9925632 -unlock
+
+Before unlocking check the card details as follows:
+
+gp -key-enc 023D4E39E537B4BD8154D90B164E36CD -key-mac 1381E1B3B0AB7F2A57F588617174E84C -key-dek 34F599526D9D079CEFB3CE1BC13A7258 -lvi
+GlobalPlatformPro 18.09.14-0-gb439b52
+Running on Linux 4.15.0-66-generic amd64, Java 1.8.0_222 by Private Build
+Reader: Gemalto USB Shell Token V2 (33E926E8) 00 00
+ATR: 3B9F96801FC78031A073BE21136743200718000001A5
+More information about your card:
+    http://smartcard-atr.appspot.com/parse?ATR=3B9F96801FC78031A073BE21136743200718000001A5
+
+[DEBUG] GlobalPlatform - Auto-detected ISD: A000000003000000
+[WARN] GPData - Invalid CPLC date: FFFF
+[WARN] GPData - Invalid CPLC date: FFFF
+[WARN] GPData - Invalid CPLC date: FFFF
+[WARN] GPData - Invalid CPLC date: FFFF
+[WARN] GPData - Invalid CPLC date: FFFF
+[WARN] GPData - Invalid CPLC date: FFFF
+CPLC: ICFabricator=FFFF
+      ICType=FFFF
+      OperatingSystemID=FFFF
+      OperatingSystemReleaseDate=FFFF (invalid date format)
+      OperatingSystemReleaseLevel=FFFF
+      ICFabricationDate=FFFF (invalid date format)
+      ICSerialNumber=FFFFFFFF
+      ICBatchIdentifier=FFFF
+      ICModuleFabricator=FFFF
+      ICModulePackagingDate=FFFF (invalid date format)
+      ICCManufacturer=FFFF
+      ICEmbeddingDate=FFFF (invalid date format)
+      ICPrePersonalizer=FFFF
+      ICPrePersonalizationEquipmentDate=FFFF (invalid date format)
+      ICPrePersonalizationEquipmentID=FFFFFFFF
+      ICPersonalizer=FFFF
+      ICPersonalizationDate=FFFF (invalid date format)
+      ICPersonalizationEquipmentID=FFFFFFFF
+
+IIN: 42020102
+CIN: 45020506
+Card Data: 
+Tag 6: 1.2.840.114283.1
+-> Global Platform card
+Tag 60: 1.2.840.114283.2.2.1.1
+-> GP Version: 2.1.1
+Tag 63: 1.2.840.114283.3
+Tag 64: 1.2.840.114283.4.2.21
+-> GP SCP02 i=15
+Card Capabilities: 
+[DEBUG] GPData - GET DATA(Card Capabilities): N/A
+Version:   1 (0x01) ID:   1 (0x01) type: DES3 length:  16 
+Version:   1 (0x01) ID:   2 (0x02) type: DES3 length:  16 
+Version:   1 (0x01) ID:   3 (0x03) type: DES3 length:  16 
+Version:   2 (0x02) ID:   1 (0x01) type: DES3 length:  16 
+Version:   2 (0x02) ID:   2 (0x02) type: DES3 length:  16 
+Version:   2 (0x02) ID:   3 (0x03) type: DES3 length:  16 
+Version:   3 (0x03) ID:   1 (0x01) type: DES3 length:  16 
+Version:   3 (0x03) ID:   2 (0x02) type: DES3 length:  16 
+Version:   3 (0x03) ID:   3 (0x03) type: DES3 length:  16 
+[DEBUG] GlobalPlatform - Host challenge: FE2303A1C9A9FC6F
+[DEBUG] GlobalPlatform - Card challenge: 0001A654519B35BB
+[DEBUG] GlobalPlatform - Card reports SCP02 with key version 1 (0x01)
+[DEBUG] GlobalPlatform - Will do SCP02 (8)
+[DEBUG] PlaintextKeys - Card keys: {MAC=type=RAW bytes=1381E1B3B0AB7F2A57F588617174E84C, DEK=type=RAW bytes=34F599526D9D079CEFB3CE1BC13A7258, ENC=type=RAW bytes=023D4E39E537B4BD8154D90B164E36CD}
+[DEBUG] GlobalPlatform - Verified card cryptogram: 1B3EAF611FE3DB8E
+[DEBUG] GlobalPlatform - Calculated host cryptogram: 916261613F94F750
+ISD: A000000003000000 (INITIALIZED)
+     Privs:   SecurityDomain, CardLock, CardTerminate, CVMManagement
+
+APP: A0000000090001FFFFFFFF8900000000 (SELECTABLE) (|................|)
+     Privs:   CardReset
+
+PKG: A0000000090001FFFFFFFF8900 (LOADED) (|.............|)
+     Applet:  A0000000090001FFFFFFFF8900000000 (|................|)
+     Applet:  A0000000090001FFFFFFFF89B00010 (|...............|)
+     Applet:  A0000000871002FF49FFFF89040B0000 (|........I.......|)
+     Applet:  FF434E52581040040203000000000000 (|.CNRX.@.........|)
+
+
+$ gp -key-enc 023D4E39E537B4BD8154D90B164E36CD -key-mac 1381E1B3B0AB7F2A57F588617174E84C -key-dek 34F599526D9D079CEFB3CE1BC13A7258 -unlock
+Default type=DES3 bytes=404142434445464748494A4B4C4D4E4F kcv=8BAF47 set as master key for A000000003000000
+
+
+Use Java v1.8, can switch between different java versions using command below
+
+sudo update-alternatives --config java
+sudo update-alternatives --config javac
+
+### What you will need
+
+sysmoUSIM-SJS1 card
+KIC, KID private keys of the card
+PCSC, serial card reader or be able to send SMS to the SIM card
+JDK to create Java1.1 bytecode to create/customize SIM Toolkit applets.
+
+### What you can read
+JavaCard? API specification (​http://www.andresteder.com/static/api/simtoolkitapi/sim/toolkit/package-summary.html)
+3GPP sim.toolkit API (​http://www.etsi.org/deliver/etsi_ts/101400_101499/101476/07.00.00_60/ts_101476v070000p.pdf). Specially setEvent is a good keyword to look at
+
+### Building an example applet
+$ git clone git://git.osmocom.org/sim/sim-tools/
+$ git clone git://git.osmocom.org/sim/hello-stk
+$ cd hello-stk
+$ make
+$ ls -la ./build/javacard/org/toorcamp/HelloSTK/javacard/HelloSTK.cap
+
+*** Copy the created HelloSTK.cap into the location of shadysim.py (Kic and Kid varies from SIM to SIM)
+
+$ cd sim-tools/shady-sim
+$ python shadysim.py --pcsc -l HelloSTK.cap -i HelloSTK.cap --enable-sim-toolkit --module-aid d07002ca44900101 --instance-aid d07002CA44900101 --nonvolatile-memory-required 0100 --volatile-memory-for-install 0100 --max-menu-entry-text 15 --max-menu-entries 05 --kic 404142434445464748494A4B4C4D4E4F --kid 404142434445464748494A4B4C4D4E4F
+
+# To Delete it (it takes time)
+$ python shadysim.py --pcsc -d d07002CA449001 --kic 404142434445464748494A4B4C4D4E4F --kid 404142434445464748494A4B4C4D4E4F
+
+Working with a SMPP reader
+Instead of directly interacting with the SIM through a PCSC reader the APDU is sent through SMPP. Replace the --pcsc call with --smpp and lines starting with SMPP are printed. These then need to be sent.
+
+More applets
+Follow the same steps as building the Helloworld applet.
+
+SMS I'm alive
+Applet to deliver an SMS the very first time the SIM registers in the GSM/GPRS network https://github.com/PodgroupConnectivity/sim-applet-sms-im-alive
+
+$ git clone https://github.com/PodgroupConnectivity/sim-applet-sms-im-alive.git
+
+APN autoconfiguration
+Applet to configure a PDP Context with a correct APN via RUN AT proactive command https://github.com/PodgroupConnectivity/sim-applet-apn-autoconf
+
+$ git clone https://github.com/PodgroupConnectivity/sim-applet-apn-autoconf.git
+
+Data heartbeat
+Applet to monitor the status of data connectivity over-the-air https://github.com/PodgroupConnectivity/sim-applet-data-heartbeat
+
+$ git clone https://github.com/PodgroupConnectivity/sim-applet-data-heartbeat.git
+
+*****************************************************************************************************************************************************************************************************
+
+ACCESS CONTROL:
+
+Applet 1 ==>
+
+ARAM Applet: (More generic solution, where access rules can be applied on the fly)
+
+ARA-M is an application (typically present on a SIM card) which manage access rules that are enforced by an Access Control Enforcer (typically present on Android device). The enforcer makes sure the rules from the ARAM are enforced. An access rule is composed of :
+
+an AID
+a certificate hash (sha1 of client application cert)
+a set of rules
+The Access Control enforcer will allow/deny a client application (for example an Android app) to send APDU to a SE applet based on these rules
+
+$ git clone https://github.com/bertrandmartel/aram-applet
+$ cd aram-applet
+$ git submodule update --init
+
+Remove 'implements Application' as follows in the git diff
+
+~/aram-applet$ git diff
+diff --git a/aram/src/main/java/fr/bmartel/aram/AccessRuleMaster.java b/aram/src/main/java/fr/bmartel/aram/AccessRuleMaster.java
+index 906aa8a..4c6918a 100644
+--- a/aram/src/main/java/fr/bmartel/aram/AccessRuleMaster.java
++++ b/aram/src/main/java/fr/bmartel/aram/AccessRuleMaster.java
+@@ -34,7 +34,7 @@ import org.globalplatform.Application;
+  *
+  * @author Bertrand Martel
+  */
+-public class AccessRuleMaster extends Applet implements Application {
++public class AccessRuleMaster extends Applet {
+ 
+     public final static byte INS_STORE_DATA = (byte) 0xE2;
+     public final static byte INS_GET_DATA = (byte) 0xCA;
+
+
+$ ./gradlew build
+$ ./gradlew installJavaCard
+
+Raw APDU
+
+For listing rules
+
+$ ./gradlew list
+
+(OR $ gp -d -a 00A4040009A00000015141434C0000 -a 80CAFF4000)
+
+Send store data command raw apdu via GlobalPlatformPro (for add & delete) :
+
+Add rule (Pre-defined in build.gradle)
+
+$ ./gradlew store
+
+(OR $ gp -a 00A4040009A00000015141434C0000 -a 80E290003DF03BE239E1284F10D2760001180002FF49502589C0019B01C1140102030405060708090A0B0C0D0E0F1011121314E30DD00101DB080000000000000001)
+
+$ gp -acr-list
+[WARN] GlobalPlatform - No FCI returned to SELECT
+RULE #0 :
+       AID  : D2760001180002FF49502589C0019B01
+       HASH : 0102030405060708090A0B0C0D0E0F1011121314
+       APDU rule   : ALWAYS(0x01)
+       APDU filter : 
+
+Delete rule
+
+$ ./gradlew delete
+
+(OR $ gp -a 00A4040009A00000015141434C0000 -a 80E2900014F1124F10D2760001180002FF49502589C0019B0100)
+
+$ gp -acr-list
+[WARN] GlobalPlatform - No FCI returned to SELECT
+No rules found
+
+
+
+           |REF-AR-DO|T|E2    | |                  | |                                        |
+           |         |L|39    | |                  | |                                        |
+           |         |V|REF-DO|T|E1                | |                                        |
+           |         | |      |L|28                | |                                        |
+           |         | |      |V|AID-REF-DO        |T|4F                                      |
+           |         | |      | |                  |L|10                                      |
+           |         | |      | |                  |V|D2760001180002FF49502589C0019B01        |
+           |         | |      | |DeviceAppID-REF-DO|T|C1                                      |
+           |         | |      | |                  |L|14                                      |
+           |         | |      | |                  |V|0102030405060708090A0B0C0D0E0F1011121314|
+           |         | |AR-DO |T|E3                | |                                        |
+           |         | |      |L|0D                | |                                        |
+           |         | |      |V|APDU-AR-DO        |T|D0                                      |
+           |         | |      | |                  |L|01                                      |
+           |         | |      | |                  |V|01 (Always)                             |
+           |         | |      | |PERM-AR-DO        |T|DB                                      |
+           |         | |      | |                  |L|08                                      |
+           |         | |      | |                  |V|0000000000000001                        |
+
+Split up of APDU for adding a rule as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 3D F0 3B E2 39 E1 28 4F 10 D2760001180002FF49502589C0019B01 C1 14 0102030405060708090A0B0C0D0E0F1011121314 E3 0D D0 01 01 DB 08 0000000000000001
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E290003DF03BE239E1284F10D2760001180002FF49502589C0019B01C1140102030405060708090A0B0C0D0E0F1011121314E30DD00101DB080000000000000001
+
+Split up of APDU for deleting a rule as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 14 F1 12 4F 10 D2760001180002FF49502589C0019B01 00
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E2900014F1124F10D2760001180002FF49502589C0019B0100
+
+
+#### REF-AR-DO for UICC Carrier Privileges
+
+           |REF-AR-DO|T|E2    | |                  | |                                        |
+           |         |L|2F    | |                  | |                                        |
+           |         |V|REF-DO|T|E1                | |                                        |
+           |         | |      |L|1E                | |                                        |
+           |         | |      |V|AID-REF-DO        |T|4F                                      |
+           |         | |      | |                  |L|06                                      |
+           |         | |      | |                  |V|FFFFFFFFFFFF                            |
+           |         | |      | |DeviceAppID-REF-DO|T|C1                                      |
+           |         | |      | |                  |L|14                                      |
+           |         | |      | |                  |V|61ED377E85D386A8DFEE6B864BD85B0BFAA5AF81|
+           |         | |AR-DO |T|E3                | |                                        |
+           |         | |      |L|0D                | |                                        |
+           |         | |      |V|APDU-AR-DO        |T|D0                                      |
+           |         | |      | |                  |L|01                                      |
+           |         | |      | |                  |V|01 (Always)                             |
+           |         | |      | |PERM-AR-DO        |T|DB                                      |
+           |         | |      | |                  |L|08                                      |
+           |         | |      | |                  |V|0000000000000001                        |
+
+
+Split up of APDU for adding a rule as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 33 F0 31 E2 2F E1 1E 4F 06 FFFFFFFFFFFF C1 14 61ED377E85D386A8DFEE6B864BD85B0BFAA5AF81 E3 0D D0 01 01 DB 08 0000000000000001
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E2900033F031E22FE11E4F06FFFFFFFFFFFFC11461ED377E85D386A8DFEE6B864BD85B0BFAA5AF81E30DD00101DB080000000000000001
+
+Split up of APDU for deleting rule (based on AID) as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 0A F1 08 4F 06 FFFFFFFFFFFF 00
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E290000AF1084F06FFFFFFFFFFFF00
+
+
+#### REF-AR-DO for non-specific applications and applets
+
+           |REF-AR-DO|T|E2    | |                  | |                                        |
+           |         |L|0B    | |                  | |                                        |
+           |         |V|REF-DO|T|E1                | |                                        |
+           |         | |      |L|04                | |                                        |
+           |         | |      |V|AID-REF-DO        |T|4F                                      |
+           |         | |      | |                  |L|00 (Not Specified)                      |
+           |         | |      | |DeviceAppID-REF-DO|T|C1                                      |
+           |         | |      | |                  |L|00 (Not Specified)                      |
+           |         | |AR-DO |T|E3                | |                                        |
+           |         | |      |L|03                | |                                        |
+           |         | |      |V|APDU-AR-DO        |T|D0                                      |
+           |         | |      | |                  |L|01                                      |
+           |         | |      | |                  |V|01 (Always)                             |
+
+Split up of APDU for adding a rule as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 0F F0 0D E2 0B E1 04 4F 00 C1 00 E3 03 D0 01 01
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E290000FF00DE20BE1044F00C100E303D00101
+
+Split up of APDU for deleting rule as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 0F F1 0D E2 0B E1 04 4F 00 C1 00 E3 03 D0 01 01
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E290000FF10DE20BE1044F00C100E303D00101
+
+
+#### REF-AR-DOs for the specific applets. Accesses from those applets are basically prohibited.
+
+           |REF-AR-DO|T|E2    | |                  | |                                        |
+           |         |L|1B    | |                  | |                                        |
+           |         |V|REF-DO|T|E1                | |                                        |
+           |         | |      |L|14                | |                                        |
+           |         | |      |V|AID-REF-DO        |T|4F                                      |
+           |         | |      | |                  |L|10                                      |
+           |         | |      | |                  |V|A000000476416E64726F696443545340        |
+           |         | |      | |DeviceAppID-REF-DO|T|C1                                      |
+           |         | |      | |                  |L|00 (Not Specified)                      |
+           |         | |AR-DO |T|E3                | |                                        |
+           |         | |      |L|03                | |                                        |
+           |         | |      |V|APDU-AR-DO        |T|D0                                      |
+           |         | |      | |                  |L|01                                      |
+           |         | |      | |                  |V|00 (Never)                              |
+
+
+Split up of APDU for adding a rule as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 1F F0 1D E2 1B E1 14 4F 10 A000000476416E64726F696443545340 C1 00 E3 03 D0 01 00
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E290001FF01DE21BE1144F10A000000476416E64726F696443545340C100E303D00100
+
+Split up of APDU for deleting rule as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 1F F1 1D E2 1B E1 14 4F 10 A000000476416E64726F696443545340 C1 00 E3 03 D0 01 00
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E290001FF11DE21BE1144F10A000000476416E64726F696443545340C100E303D00100
+
+
+#### REF-AR-DOs with the specific APDU fileters for CtsSecureElementAccessControlTestCases1.
+
+           |REF-AR-DO|T|E2    | |                  | |                                        |
+           |         |L|3E    | |                  | |                                        |
+           |         |V|REF-DO|T|E1                | |                                        |
+           |         | |      |L|28                | |                                        |
+           |         | |      |V|AID-REF-DO        |T|4F                                      |
+           |         | |      | |                  |L|10                                      |
+           |         | |      | |                  |V|A000000476416E64726F696443545340        |
+           |         | |      | |DeviceAppID-REF-DO|T|C1                                      |
+           |         | |      | |                  |L|14                                      |
+           |         | |      | |                  |V|4BBE31BEB2F753CFE71EC6BF112548687BB6C34E|
+           |         | |AR-DO |T|E3                | |                                        |
+           |         | |      |L|12                | |                                        |
+           |         | |      |V|APDU-AR-DO        |T|D0                                      |
+           |         | |      | |                  |L|10                                      |
+           |         | |      | |                  |V|00060000 / FFFF0000                     |
+           |         | |      | |                  | |A0060000 / FFFF0000                     |
+
+
+Split up of APDU for adding a rule as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 42 F0 40 E2 3E E1 28 4F 10 A000000476416E64726F696443545340 C1 14 4BBE31BEB2F753CFE71EC6BF112548687BB6C34E E3 12 D0 10 00060000 FFFF0000 A0060000 FFFF0000
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E2900042F040E23EE1284F10A000000476416E64726F696443545340C1144BBE31BEB2F753CFE71EC6BF112548687BB6C34EE312D01000060000FFFF0000A0060000FFFF0000
+
+Split up of APDU for deleting rule as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 42 F1 40 E2 3E E1 28 4F 10 A000000476416E64726F696443545340 C1 14 4BBE31BEB2F753CFE71EC6BF112548687BB6C34E E3 12 D0 10 00060000 FFFF0000 A0060000 FFFF0000
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E2900042F140E23EE1284F10A000000476416E64726F696443545340C1144BBE31BEB2F753CFE71EC6BF112548687BB6C34EE312D01000060000FFFF0000A0060000FFFF0000
+
+
+           |REF-AR-DO|T|E2    | |                  | |                                        |
+           |         |L|36    | |                  | |                                        |
+           |         |V|REF-DO|T|E1                | |                                        |
+           |         | |      |L|28                | |                                        |
+           |         | |      |V|AID-REF-DO        |T|4F                                      |
+           |         | |      | |                  |L|10                                      |
+           |         | |      | |                  |V|A000000476416E64726F696443545341        |
+           |         | |      | |DeviceAppID-REF-DO|T|C1                                      |
+           |         | |      | |                  |L|14                                      |
+           |         | |      | |                  |V|4BBE31BEB2F753CFE71EC6BF112548687BB6C34E|
+           |         | |AR-DO |T|E3                | |                                        |
+           |         | |      |L|0A                | |                                        |
+           |         | |      |V|APDU-AR-DO        |T|D0                                      |
+           |         | |      | |                  |L|08                                      |
+           |         | |      | |                  |V|94000000 / FF000000                     |
+
+
+Split up of APDU for adding a rule as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 3A F0 38 E2 36 E1 28 4F 10 A000000476416E64726F696443545341 C1 14 4BBE31BEB2F753CFE71EC6BF112548687BB6C34E E3 0A D0 08 94000000 FF000000
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E290003AF038E236E1284F10A000000476416E64726F696443545341C1144BBE31BEB2F753CFE71EC6BF112548687BB6C34EE30AD00894000000FF000000
+
+Split up of APDU for deleting rule as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 3A F1 38 E2 36 E1 28 4F 10 A000000476416E64726F696443545341 C1 14 4BBE31BEB2F753CFE71EC6BF112548687BB6C34E E3 0A D0 08 94000000 FF000000
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E290003AF138E236E1284F10A000000476416E64726F696443545341C1144BBE31BEB2F753CFE71EC6BF112548687BB6C34EE30AD00894000000FF000000
+
+
+           |REF-AR-DO|T|E2    | |                  | |                                        |
+           |         |L|2F    | |                  | |                                        |
+           |         |V|REF-DO|T|E1                | |                                        |
+           |         | |      |L|28                | |                                        |
+           |         | |      |V|AID-REF-DO        |T|4F                                      |
+           |         | |      | |                  |L|10                                      |
+           |         | |      | |                  |V|A000000476416E64726F696443545342        |
+           |         | |      | |DeviceAppID-REF-DO|T|C1                                      |
+           |         | |      | |                  |L|14                                      |
+           |         | |      | |                  |V|4BBE31BEB2F753CFE71EC6BF112548687BB6C34E|
+           |         | |AR-DO |T|E3                | |                                        |
+           |         | |      |L|03                | |                                        |
+           |         | |      |V|APDU-AR-DO        |T|D0                                      |
+           |         | |      | |                  |L|01                                      |
+           |         | |      | |                  |V|01 (Always)                             |
+
+
+Split up of APDU for adding a rule as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 33 F0 31 E2 2F E1 28 4F 10 A000000476416E64726F696443545342 C1 14 4BBE31BEB2F753CFE71EC6BF112548687BB6C34E E3 03 D0 01 01
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E2900033F031E22FE1284F10A000000476416E64726F696443545342C1144BBE31BEB2F753CFE71EC6BF112548687BB6C34EE303D00101
+
+Split up of APDU for deleting rule as per above structure:
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E29000 33 F1 31 E2 2F E1 28 4F 10 A000000476416E64726F696443545342 C1 14 4BBE31BEB2F753CFE71EC6BF112548687BB6C34E E3 03 D0 01 01
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E2900033F131E22FE1284F10A000000476416E64726F696443545342C1144BBE31BEB2F753CFE71EC6BF112548687BB6C34EE303D00101
+
+
+Adding a rule
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E2900033F031E22FE11E4F06FFFFFFFFFFFFC114C2207575D62AA2F430D7E4CEE2E01DFD562BC095E30DD00101DB080000000000000001
+
+
+To install the applet to the SIM
+
+$ gp -install applet.cap
+
+To delete the applet from SIM
+
+$ gp -delete A00000015141434C -f
+
+**********************************************************************************************************************************************************************************************************
+
+Applet 2 ==>
+
+aram-cardlet: (Limitation: This is built to give UICC carrier priviliges to the Google CTS app which is signed with HASH key 61ED377E85D386A8DFEE6B864BD85B0BFAA5AF81, for any other app with any other key there is need to modify the code by hand and recompile and re-install the applet)
+
+This Java Card applet can work as ARA-M containing the access rules required by Android Secure Element CTS. It is not guaranteed that this applet works for the future versions of the CTS test cases.
+
+$ git clone https://github.com/cheeriotb/aram-cardlet
+
+Edit the Makefile as per the location of sim-tools cloned earlier
+
+$ make
+
+*** Copy the created applet.cap into the location of shadysim.py (Kic and Kid varies from SIM to SIM)
+
+$ python shadysim.py --pcsc -l applet.cap -i applet.cap  --enable-sim-toolkit --kic 404142434445464748494A4B4C4D4E4F --kid 404142434445464748494A4B4C4D4E4F --module-aid A00000015141434C00 --instance-aid A00000015141434C00 --nonvolatile-memory-required 0100 --volatile-memory-for-install 0100 --max-menu-entry-text 15 --max-menu-entries 05
+
+# Delete it (it takes time)
+$ python shadysim.py --pcsc -d A00000015141434C --kic 404142434445464748494A4B4C4D4E4F --kid 404142434445464748494A4B4C4D4E4F
+
+Verify the addition of new applet as follows:
+
+$ python shadysim.py --pcsc -t --enable-sim-toolkit --kic 404142434445464748494A4B4C4D4E4F --kid 404142434445464748494A4B4C4D4E4F
+
+OR
+
+$ gp -lv
+
+$ gp -acr-list
+[WARN] GlobalPlatform - No mandatory proprietary info present in FCI
+RULE #0 :
+       AID  : FFFFFFFFFFFF
+       HASH : 61ED377E85D386A8DFEE6B864BD85B0BFAA5AF81
+       APDU rule   : ALWAYS(0x01)
+RULE #1 :
+       APDU rule   : ALWAYS(0x01)
+RULE #2 :
+       AID  : A000000476416E64726F696443545340
+       APDU rule   : NEVER(0x00)
+RULE #3 :
+       AID  : A000000476416E64726F696443545341
+       APDU rule   : NEVER(0x00)
+RULE #4 :
+       AID  : A000000476416E64726F696443545342
+       APDU rule   : NEVER(0x00)
+RULE #5 :
+       AID  : A000000476416E64726F696443545343
+       APDU rule   : NEVER(0x00)
+RULE #6 :
+       AID  : A000000476416E64726F696443545344
+       APDU rule   : NEVER(0x00)
+RULE #7 :
+       AID  : A000000476416E64726F696443545345
+       APDU rule   : NEVER(0x00)
+RULE #8 :
+       AID  : A000000476416E647200000000000000
+
+
+Applet 3:
+
+sects-cardlet
+This is a Java Card applet can be used for running Android Secure Element CTS. It is not guaranteed that this applet works for the future versions of the CTS test cases.
+
+This is used to install the below applets which are accessed in an Android Secure Element CTS test (Unrelated to ARA-M applet, i.e. giving UICC carrier priviliges to apps)
+
+AID: a000000476416e64726f6964435453, State: 01, Privs: 00
+	Instance AID: a000000476416e64726f696443545331
+	Instance AID: a000000476416e64726f696443545332
+	Instance AID: a000000476416e64726f696443545340
+	Instance AID: a000000476416e64726f696443545341
+	Instance AID: a000000476416e64726f696443545342
+	Instance AID: a000000476416e64726f696443545343
+	Instance AID: a000000476416e64726f696443545344
+	Instance AID: a000000476416e64726f696443545345
+	Instance AID: a000000476416e64726f696443545346
+	Instance AID: a000000476416e64726f696443545347
+	Instance AID: a000000476416e64726f696443545348
+	Instance AID: a000000476416e64726f696443545349
+	Instance AID: a000000476416e64726f69644354534a
+	Instance AID: a000000476416e64726f69644354534b
+	Instance AID: a000000476416e64726f69644354534c
+	Instance AID: a000000476416e64726f69644354534d
+	Instance AID: a000000476416e64726f69644354534e
+	Instance AID: a000000476416e64726f69644354534f
+
+
+$ git clone https://github.com/cheeriotb/sects-cardlet
+
+Edit the Makefile as per the location of sim-tools cloned earlier
+
+$ make
+
+*** Copy the created cardlet.cap into the location of shadysim.py (Kic and Kid varies from SIM to SIM)
+
+$ python shadysim.py --pcsc -l cardlet.cap -i cardlet.cap  --enable-sim-toolkit --kic 404142434445464748494A4B4C4D4E4F --kid 404142434445464748494A4B4C4D4E4F --module-aid a000000476416e64726f696443545331 --instance-aid a000000476416e64726f696443545331
+
+(Even though only one of the applet ID is given as the parameter to shadysim.py, all the other applets present in the .cap file are installed)
+
+# Delete it (it takes time)
+$ python shadysim.py --pcsc -d a000000476416e64726f6964435453 --kic 404142434445464748494A4B4C4D4E4F --kid 404142434445464748494A4B4C4D4E4F
+
+Verify the addition of new applet as follows:
+
+$ python shadysim.py --pcsc -t --enable-sim-toolkit --kic 404142434445464748494A4B4C4D4E4F --kid 404142434445464748494A4B4C4D4E4F
+
+OR
+
+$ gp -lv
+
+##############################################################################################################################################################################################
+
+VALIDATION:
+
+##############################################################################################################################################################################################
+
+The Android 7.0 CTS includes tests for carrier APIs in CtsCarrierApiTestCases.apk. Because this feature depends on certificates on the UICC, you must prepare the UICC to pass these tests.
+
+Compatibility Test Suite Downloads (https://source.android.com/compatibility/cts/downloads)
+
+https://source.android.com/compatibility/cts/secure-element
+
+1. Download the package for desired Android Version (This guide is using Android 9.0)
+2. Extract the zip onto home folder
+
+$ sudo apt-get install aapt
+
+Running CTS tests to validate UICC carrier priviliges (https://source.android.com/compatibility/cts/run)
+
+Launch the CTS console cts-tradefed script from the folder where the CTS package has been unzipped. On the host's command-line shell, run:
+
+$ ./android-cts/tools/cts-tradefed
+Run the default test plan (contains all test packages):
+cts-tradefed > run cts
+
+If you don't want to run the whole test suite, you can run the CTS plan of your choice from the command line:
+
+cts-tradefed > list modules
+cts-tradefed > run cts --module CtsCarrierApiTestCases
+cts-tradefed > exit
+
+(Note: Worked on Oneplus 5T but not on Samsung Galaxy Note 3 - SM 9005 with Lineage OS 16.0)
+
+##############################################################################################################################################################################################
+
+To obtain list of supported algorithms by your card:
+
+Download the zip from Releases in following github page https://github.com/crocs-muni/JCAlgTest
+
+1. Upload AlgTest_v1.7.1_jc221.cap to target card (upload AlgTest_v1.7.1_supportOnly_jc221.cap if you are NOT interested in performance tests)
+
+$ gp -install AlgTest_v1.7.1_jc221.cap
+
+2. Run java -jar AlgTestJClient_v1.7.1.jar
+3. Select option 1 -> SUPPORTED ALGORITHMS
+4. Fill identification (name) of your card
+5. Wait for test to finish (2-10 min)
+6. Inspect resulting CSV file
+
+Delete the applet as follow:
+
+$ gp -delete 4A43416C6754657374
+
+##############################################################################################################################################################################################
+REASON FOR: LOAD failed: 0x6438 when Loading CAP -> Conclusion: sysmocom USIM only support JavaCard 2.2.1
+##############################################################################################################################################################################################
+I'm experiencing that same error code on a card that only supports JavaCard 2.2.1.
+
+I'm working on a fork of PivApplet that supports 2.2.1 and very low memory cards. It loses extended APDU support, but I think I can keep the applet mostly the same.
+
+The errors seem to come from things like JC2.2.1 not having the classes for Extended length APDUs, or the convenience methods that parse the APDUs.
+
+If you'd like to test if this is the problem, I'd suggest trying JCAlgTest:
+
+https://github.com/crocs-muni/JCAlgTest/releases/tag/v1.7.1.1
+
+If AlgTest_v1.7.1_jc221.cap will install, but AlgTest_v1.7.6_jc222.cap won't, this is probably your issue.
+
+##############################################################################################################################################################################################
+Android App signed with the same hash key as installed in the SIM card to enable VoLTE/VoWIFI
+##############################################################################################################################################################################################
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Very important !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Make sure to use one of the known MNC MCC for the SIM and network or less wont work (IMS on roaming is mostly disabled). For test use the test PLMN 001 01
+
+$ gp -a 00A4040009A00000015141434C0000 -a 80E2900033F031E22FE11E4F06FFFFFFFFFFFFC114C2207575D62AA2F430D7E4CEE2E01DFD562BC095E30DD00101DB080000000000000001
+
+App signed certificate details
+
+MD5: E7:4E:15:DB:9F:E1:A1:92:02:A0:B3:50:F0:9E:FB:01
+SHA1: C2:20:75:75:D6:2A:A2:F4:30:D7:E4:CE:E2:E0:1D:FD:56:2B:C0:95
+SHA-256: E2:8B:BE:6D:51:9D:FA:C0:F3:86:00:D0:72:06:FC:47:89:CE:0E:07:07:5E:03:51:4C:D9:93:EC:89:0A:0E:DB
+
+Make sure the PLMN ID of the SIM card is in this list or else onLoadConfig function wont execute if the CarrierIdentifier is -1 (i.e Unknown Carrier)
+
+https://android.googlesource.com/platform/packages/providers/TelephonyProvider/+/master/assets/carrier_list.textpb
+
+If the PLMN ID that you want to use is not on that list, please refer the below link
+
+https://source.android.com/devices/tech/config/carrierid#integrating_carrier_ids_with_carrierconfig
+
+
